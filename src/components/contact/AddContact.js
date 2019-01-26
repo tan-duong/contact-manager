@@ -8,6 +8,15 @@ export default class AddContact extends Component {
         email: '',
     }
 
+    _onChange = (e) => this.setState({
+        [e.target.name]: e.target.value
+    })
+
+    _onSubmit = (e) => {
+        e.preventDefault()
+        console.log(this.state)
+    }
+
     render() {
         const { name, phone, email } = this.state
         return (
@@ -16,7 +25,7 @@ export default class AddContact extends Component {
                     Add Contact
                 </div>
                 <div className="card-body">
-                    <form>
+                    <form onSubmit={this._onSubmit}>
                         <div className="form-group">
                             <label htmlFor="name">Name</label>
                             <input
@@ -25,6 +34,7 @@ export default class AddContact extends Component {
                                 placeholder="Enter name ..."
                                 value={name}
                                 className="form-control form-control-lg"    
+                                onChange={this._onChange}
                             />
                         </div>
                         <div className="form-group">
@@ -35,6 +45,7 @@ export default class AddContact extends Component {
                                 placeholder="Enter email ..."
                                 value={email}
                                 className="form-control form-control-lg"    
+                                onChange={this._onChange}
                             />
                         </div>
                         <div className="form-group">
@@ -44,13 +55,15 @@ export default class AddContact extends Component {
                                 name="phone"
                                 placeholder="Enter phone ..."
                                 value={phone}
-                                className="form-control form-control-lg"    
+                                className="form-control form-control-lg"   
+                                onChange={this._onChange} 
                             />
                         </div>
                         <input
                             type="submit"
                             value="Add Contact"
                             className="btn btn-light btn-block"
+                            
                         />
                     </form>
                 </div>
