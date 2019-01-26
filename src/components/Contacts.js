@@ -3,17 +3,7 @@ import Contact from "./Contact";
 import { Consumer } from "../Context";
 
 export default class Contacts extends Component {
-  _onDelete = id => {
-    const { contacts } = this.state;
 
-    const newContacts = contacts.filter(contact => {
-      return contact.id !== id;
-    });
-
-    this.setState({
-      contacts: newContacts
-    });
-  };
 
   render() {
     return (
@@ -27,7 +17,7 @@ export default class Contacts extends Component {
                   <Contact
                     key={contact.id}
                     contact={contact}
-                    deleteHandler={this._onDelete.bind(this, contact.id)}
+                    
                   />
                 );
               })}
