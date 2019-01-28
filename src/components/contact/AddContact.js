@@ -2,6 +2,11 @@ import React, { Component } from "react";
 
 
 export default class AddContact extends Component {
+    constructor(props){
+        super(props)
+        this.phoneInput = React.createRef()
+    }
+
     state = {
         name: '',
         phone: '',
@@ -14,6 +19,11 @@ export default class AddContact extends Component {
 
     _onSubmit = (e) => {
         e.preventDefault()
+
+        this.setState({
+            phone: this.phoneInput.current.value
+        })
+
         console.log(this.state)
     }
 
@@ -61,7 +71,7 @@ export default class AddContact extends Component {
                                 placeholder="Enter phone ..."
                                 defaultValue={phone}
                                 className="form-control form-control-lg"   
-                                
+                                ref={this.phoneInput}
                             />
                         </div>
                         <input
