@@ -17,8 +17,13 @@ export default class AddContact extends Component {
         console.log(this.state)
     }
 
+    static defaultProps = {
+        phone: '999-999-9999'
+    }
+
     render() {
-        const { name, phone, email } = this.state
+        const { name, email } = this.state
+        const { phone } = this.props
         return (
             <div className="card mb-3">
                 <div className="card-header">
@@ -54,9 +59,9 @@ export default class AddContact extends Component {
                                 type="text"
                                 name="phone"
                                 placeholder="Enter phone ..."
-                                value={phone}
+                                defaultValue={phone}
                                 className="form-control form-control-lg"   
-                                onChange={this._onChange} 
+                                
                             />
                         </div>
                         <input
