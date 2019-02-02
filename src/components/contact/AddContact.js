@@ -11,7 +11,12 @@ export default class AddContact extends Component {
   state = {
     name: "",
     phone: "",
-    email: ""
+    email: "",
+    
+      nameErr: '',
+      emailErr: '',
+      phoneErr: ''
+    
   };
 
   _onChange = e =>
@@ -29,6 +34,18 @@ export default class AddContact extends Component {
     let { name, phone, email } = this.state;
 
     phone = this.phoneInput.current.value;
+
+    //Check errors
+    if (name === "" || email === "" || phone === "") {
+      this.setState({
+        
+          nameErr: name === "" ? "name is required" : '',
+          emailErr: email === "" ? "email is required": '',
+          phoneErr: phone === "" ? "phone is required" : '',
+      });
+      return;
+    }
+
 
     const contact = {
       id: uuid(),
@@ -58,7 +75,7 @@ export default class AddContact extends Component {
   };
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, nameErr, emailErr, phoneErr } = this.state;
     const { phone } = this.props;
 
     return (
@@ -75,12 +92,14 @@ export default class AddContact extends Component {
                     placeholder="Enter name ..."
                     value={name}
                     onChange={this._onChange}
+                    error={nameErr}
                   />
                   <TextInputGroup
                     name="email"
                     placeholder="Enter email ..."
                     value={email}
                     onChange={this._onChange}
+                    error={emailErr}
                   />
                   <div className="form-group">
                     <label htmlFor="phone">Phone</label>
@@ -89,9 +108,12 @@ export default class AddContact extends Component {
                       name="phone"
                       placeholder="Enter phone ..."
                       defaultValue={phone}
-                      className="form-control form-control-lg"
+                      className={`${phoneErr !== '' ? 'is-invalid' : null} form-control form-control-lg`}
                       ref={this.phoneInput}
                     />
+                    {phoneErr && 
+                      <div className="invalid-feedback">{phoneErr}</div>
+                    }
                   </div>
 
                   <input
