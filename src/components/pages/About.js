@@ -1,8 +1,9 @@
 import React from 'react'
 
-const About = () => {
+const About = (props) => {
   return (
     <div>
+        {/* {props.match.params.name} - {props.match.params.id} */}
       <h1 className="display-4">About Contact Manager</h1>
       <p className="lead">Simple App to manage contacts</p>
       <p className="text-secondary">Version 1.0.0</p>

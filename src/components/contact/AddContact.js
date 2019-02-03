@@ -61,10 +61,15 @@ export default class AddContact extends Component {
     this.setState({
       name: "",
       phone: "",
-      email: ""
+      email: "",
+      nameErr: "",
+      emailErr: "",
+      phoneErr: ""
     });
 
     this.phoneInput.current.value = "";
+
+    this.props.history.push("/");
   };
 
   static defaultProps = {
