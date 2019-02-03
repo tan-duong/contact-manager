@@ -12,11 +12,10 @@ export default class AddContact extends Component {
     name: "",
     phone: "",
     email: "",
-    
-      nameErr: '',
-      emailErr: '',
-      phoneErr: ''
-    
+
+    nameErr: "",
+    emailErr: "",
+    phoneErr: ""
   };
 
   _onChange = e =>
@@ -38,14 +37,12 @@ export default class AddContact extends Component {
     //Check errors
     if (name === "" || email === "" || phone === "") {
       this.setState({
-        
-          nameErr: name === "" ? "name is required" : '',
-          emailErr: email === "" ? "email is required": '',
-          phoneErr: phone === "" ? "phone is required" : '',
+        nameErr: name === "" ? "name is required" : "",
+        emailErr: email === "" ? "email is required" : "",
+        phoneErr: phone === "" ? "phone is required" : ""
       });
       return;
     }
-
 
     const contact = {
       id: uuid(),
@@ -108,12 +105,14 @@ export default class AddContact extends Component {
                       name="phone"
                       placeholder="Enter phone ..."
                       defaultValue={phone}
-                      className={`${phoneErr !== '' ? 'is-invalid' : null} form-control form-control-lg`}
+                      className={`${
+                        phoneErr !== "" ? "is-invalid" : null
+                      } form-control form-control-lg`}
                       ref={this.phoneInput}
                     />
-                    {phoneErr && 
+                    {phoneErr && (
                       <div className="invalid-feedback">{phoneErr}</div>
-                    }
+                    )}
                   </div>
 
                   <input

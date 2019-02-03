@@ -4,7 +4,7 @@ import classnames from 'classnames'
 const TextInputGroup = ({ name, placeholder, value, onChange, error }) => {
   return (
     <div className="form-group">
-      <label htmlFor="name">Name</label>
+      <label htmlFor="name">{name}</label>
       <input
         type="text"
         name={name}
