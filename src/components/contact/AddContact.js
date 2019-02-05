@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Consumer } from "../../Context";
 import uuid from "uuid";
 import TextInputGroup from "../layout/TextInputGroup";
+import Axios from 'axios'
+
 export default class AddContact extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +25,7 @@ export default class AddContact extends Component {
       [e.target.name]: e.target.value
     });
 
-  _onSubmit = (dispatch, e) => {
+  _onSubmit = async (dispatch, e) => {
     e.preventDefault();
 
     this.setState({
@@ -51,12 +53,19 @@ export default class AddContact extends Component {
       email
     };
 
-    dispatch({
-      type: "ADD_CONTACT",
-      payload: {
-        contact: contact
-      }
-    });
+    const res = await Axios({
+      method: 'post',
+      url: 'https://jsonplaceholder.typicode.com/users',
+      data: contact
+    })
+
+    if(res.status === 201)
+      dispatch({
+        type: "ADD_CONTACT",
+        payload: {
+          contact: res.data
+        }
+      });
 
     this.setState({
       name: "",
