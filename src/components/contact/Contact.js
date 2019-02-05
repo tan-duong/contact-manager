@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Consumer } from "../../Context";
-
+import Axios from "axios";
 export default class Contact extends Component {
   static propTypes = {
     contact: PropTypes.object.isRequired
@@ -17,23 +17,28 @@ export default class Contact extends Component {
     });
   };
 
-  _onDelete = (id, dispatch) => {
-    dispatch({
-      type: 'DELETE_CONTACT',
-      payload: {
-        id: id
-      }
-    })
-  }
+  _onDelete = async (id, dispatch) => {
+    const res = await Axios({
+      url: `https://jsonplaceholder.typicode.com/users/${id}`,
+      method: "delete"
+    });
+
+    if (res.status === 200)
+      dispatch({
+        type: "DELETE_CONTACT",
+        payload: {
+          id: id
+        }
+      });
+  };
 
   render() {
-    
     const { showContactInfo } = this.state;
     return (
       <Consumer>
         {value => {
           const { id, name, email, phone } = this.props.contact;
-          const { dispatch } = value
+          const { dispatch } = value;
           return (
             <div className="card card-body mb-3">
               <h4>
@@ -43,8 +48,9 @@ export default class Contact extends Component {
                   className="fas fa-sort-down"
                   style={{ cursor: "pointer" }}
                 />
-                <i className="fas fa-times"
-                  style={{ cursor: 'pointer', float: 'right', color: 'red' }}
+                <i
+                  className="fas fa-times"
+                  style={{ cursor: "pointer", float: "right", color: "red" }}
                   onClick={this._onDelete.bind(this, id, dispatch)}
                 />
               </h4>
@@ -55,10 +61,9 @@ export default class Contact extends Component {
                 </ul>
               ) : null}
             </div>
-          )
+          );
         }}
       </Consumer>
-
     );
   }
 }
