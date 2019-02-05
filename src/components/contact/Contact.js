@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Consumer } from "../../Context";
 import Axios from "axios";
+import {Link} from 'react-router-dom'
 export default class Contact extends Component {
   static propTypes = {
     contact: PropTypes.object.isRequired
@@ -62,6 +63,14 @@ export default class Contact extends Component {
                   style={{ cursor: "pointer", float: "right", color: "red" }}
                   onClick={this._onDelete.bind(this, id, dispatch)}
                 />
+                <Link to={`/contact/edit/${id}`}>
+                <i
+                  className="fas fa-pencil-alt"
+                  style={{ cursor: "pointer", float: "right", color: "black", marginRight: '1rem' }}
+                  
+                />
+                </Link>
+                
               </h4>
               {showContactInfo ? (
                 <ul className="list-group">

@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import { Consumer } from "../../Context";
-//import uuid from "uuid";
+//mport uuid from "uuid";
 import TextInputGroup from "../layout/TextInputGroup";
-import Axios from 'axios'
+import Axios from "axios";
 
-export default class AddContact extends Component {
-  constructor(props) {
-    super(props);
-    this.phoneInput = React.createRef();
-  }
-
+export default class EditContact extends Component {
   state = {
     name: "",
     phone: "",
@@ -20,6 +15,20 @@ export default class AddContact extends Component {
     phoneErr: ""
   };
 
+  async componentDidMount() {
+    const { id } = this.props.match.params;
+    const res = await Axios({
+      method: "get",
+      url: `https://jsonplaceholder.typicode.com/users/${id}`
+    });
+    const { name, phone, email } = res.data;
+    this.setState({
+      name: name,
+      phone: phone,
+      email: email
+    });
+  }
+
   _onChange = e =>
     this.setState({
       [e.target.name]: e.target.value
@@ -28,13 +37,8 @@ export default class AddContact extends Component {
   _onSubmit = async (dispatch, e) => {
     e.preventDefault();
 
-    this.setState({
-      phone: this.phoneInput.current.value
-    });
-
     let { name, phone, email } = this.state;
-
-    phone = this.phoneInput.current.value;
+    const { id } = this.props.match.params;
 
     //Check errors
     if (name === "" || email === "" || phone === "") {
@@ -47,20 +51,21 @@ export default class AddContact extends Component {
     }
 
     const contact = {
+      id: id,
       name,
       phone,
       email
     };
 
     const res = await Axios({
-      method: 'post',
-      url: 'https://jsonplaceholder.typicode.com/users',
+      method: "put",
+      url: `https://jsonplaceholder.typicode.com/users/${id}`,
       data: contact
-    })
+    });
 
-    if(res.status === 201)
+    if (res.status === 200)
       dispatch({
-        type: "ADD_CONTACT",
+        type: "UPDATE_CONTACT",
         payload: {
           contact: res.data
         }
@@ -75,18 +80,11 @@ export default class AddContact extends Component {
       phoneErr: ""
     });
 
-    this.phoneInput.current.value = "";
-
     this.props.history.push("/");
   };
 
-  static defaultProps = {
-    phone: "999-999-9999"
-  };
-
   render() {
-    const { name, email, nameErr, emailErr, phoneErr } = this.state;
-    const { phone } = this.props;
+    const { name, email, phone, nameErr, emailErr, phoneErr } = this.state;
 
     return (
       <Consumer>
@@ -94,7 +92,7 @@ export default class AddContact extends Component {
           const { dispatch } = value;
           return (
             <div className="card mb-3">
-              <div className="card-header">Add Contact</div>
+              <div className="card-header">Update Contact</div>
               <div className="card-body">
                 <form onSubmit={this._onSubmit.bind(this, dispatch)}>
                   <TextInputGroup
@@ -111,26 +109,17 @@ export default class AddContact extends Component {
                     onChange={this._onChange}
                     error={emailErr}
                   />
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
-                    <input
-                      type="text"
-                      name="phone"
-                      placeholder="Enter phone ..."
-                      defaultValue={phone}
-                      className={`${
-                        phoneErr !== "" ? "is-invalid" : null
-                      } form-control form-control-lg`}
-                      ref={this.phoneInput}
-                    />
-                    {phoneErr && (
-                      <div className="invalid-feedback">{phoneErr}</div>
-                    )}
-                  </div>
+                  <TextInputGroup
+                    name="phone"
+                    placeholder="Enter phone ..."
+                    value={phone}
+                    onChange={this._onChange}
+                    error={phoneErr}
+                  />
 
                   <input
                     type="submit"
-                    value="Add Contact"
+                    value="Update Contact"
                     className="btn btn-light btn-block"
                   />
                 </form>
