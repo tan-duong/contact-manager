@@ -18,18 +18,27 @@ export default class Contact extends Component {
   };
 
   _onDelete = async (id, dispatch) => {
-    const res = await Axios({
-      url: `https://jsonplaceholder.typicode.com/users/${id}`,
-      method: "delete"
-    });
+    try {
+      const res = await Axios({
+        url: `https://jsonplaceholder.typicode.com/users/${id}`,
+        method: "delete"
+      });
 
-    if (res.status === 200)
+      if (res.status === 200)
+        dispatch({
+          type: "DELETE_CONTACT",
+          payload: {
+            id: id
+          }
+        });
+    } catch (error) {
       dispatch({
         type: "DELETE_CONTACT",
         payload: {
           id: id
         }
       });
+    }
   };
 
   render() {
